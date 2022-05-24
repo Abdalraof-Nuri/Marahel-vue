@@ -2,8 +2,8 @@
   <sideBar />
 
   <div id="content" class="p-4 p-md-5">
-    <navBar />
-    <mainBody />
+    <navBar @name="displayName"/>
+    <mainBody :name="name"/>
   </div>
 
 </template>
@@ -17,8 +17,19 @@ import mainBody from "./components/main-body.vue";
 
 export default {
   name: "App",
+  
+  data(){
+    return {
+      name: ''
+    }
+  },
+  
   components: { sideBar, navBar, mainBody },
-
+  methods: {
+    displayName(value){
+      this.name = value
+    }
+  }
   
 };
 </script>

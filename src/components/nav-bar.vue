@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width:60%; position:fixed; z-index: 100;">
     <div class="container-fluid">
 
       <button 
@@ -31,8 +31,8 @@
           <li class="nav-item active">
             <a class="nav-link" href="#">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
+          <li class="nav-item" @click="displayName()">
+            <a class="nav-link" href="#">display</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Portfolio</a>
@@ -49,5 +49,13 @@
 <script>
 export default {
   name: 'navBar',
-};
+
+  methods: {
+    // API call goes here, data set insted of jweda
+    displayName(){
+      this.$emit('name', 'jweda')
+  }
+  }
+  
+  };
 </script>
