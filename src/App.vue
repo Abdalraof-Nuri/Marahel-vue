@@ -25,13 +25,15 @@
           Link
         </a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
-          <i class="fa fa-home"></i>
-          Home
-          <span class="sr-only">(current)</span>
-          </a>
-      </li>
+      <router-link :to="{ name: 'home'}" style="text-decoration: none; color:white;">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">
+            <i class="fa fa-home"></i>
+            Home
+            <span class="sr-only">(current)</span>
+            </a>
+        </li>
+      </router-link>
 
 
       <!-- <li class="nav-item">
@@ -77,8 +79,8 @@
     </ul>
     <form class="form-inline my-2 my-lg-0">
         
-    <button  class="btn btn-outline-success my-2 my-sm-0" style="margin-right:10px;">
-      <router-link :to="{ name: 'searchResults', query: {text: this.text}}">searchResults</router-link>
+    <button  class="btn btn-outline-success my-2 my-sm-0 search-btn" style="margin-right:10px; ">
+      <router-link :to="{ name: 'searchResults', query: {text: this.text}}" style="text-decoration: none; color:white;">Search</router-link>
       </button>
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search..." v-model="this.text">
     </form>
@@ -88,11 +90,13 @@
   
 
   
-  <div class="container" style="padding:50px; margin-top:80px;">
+  <div class="container-fluid" style=" margin-top:80px;">
     <router-view :key="this.$route.query.text"/>
   </div>
 </template>
 <script>
+
+
 
 export default{
   data(){
@@ -100,7 +104,12 @@ export default{
       text: '',
     }
   },
-  methods: {}
+  methods: {},
+  beforeCreate() {
+    
+      this.$route.query.text = ""
+    
+  }
 }
 </script>
 
