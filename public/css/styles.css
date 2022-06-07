@@ -252,3 +252,16 @@ background: green;
     top: -7px;
   }
 }
+
+
+
+/* -----------------------------------login-sign up form-------------------------- */
+
+
+.signin-tabs{
+  border: solid 1px black ;
+  margin: auto;
+  margin-top: 100px;
+  width:65%;
+  height: 65%;
+}

@@ -1,14 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
   //import HomeView from '../views/HomeView.vue';
-  //import App from '../App.vue'
+  // import user from '../views/login-rigister.vue'
 
   import newProjects from '../views/newProjects.vue'
   import searchResults from '../views/searchResults.vue'
   import projectView from '../views/project-View.vue'
   import tasksBro from '../views/tasks-bro.vue'
   import phaseView from '../views/phase-view.vue'
+  import loginRigister from '../views/login-rigister.vue'
+  import cookie from 'vue-cookies'
+  import logoutView from '../views/logout-view.vue'
+
+
 
 const routes = [
+  {
+    path: '/login',
+    name: 'login-rigister',
+    component: loginRigister
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: logoutView
+  },
   {
     path: '/',
     name: 'home',
@@ -43,9 +58,22 @@ const routes = [
 ]
 
 
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to) => {
+
+
+  if(!cookie.get('token') && to.name !== 'login-rigister'){
+    
+    return router.push({ name: 'login-rigister'})
+  }else if(cookie.get('token') && to.name == 'login-rigister'){
+    return router.push({ name: 'home'})
+  }
+  
 })
 
 export default router

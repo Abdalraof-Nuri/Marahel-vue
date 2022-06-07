@@ -1,7 +1,8 @@
 <template>
 
 
-  <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark nav-bar-custom" style="position:fixed; width:100%; z-index:1000;">
+  <nav 
+  class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark nav-bar-custom" style="position:fixed; width:100%; z-index:1000;">
   <!-- <a class="navbar-brand" href="#">Navbar</a> -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -9,10 +10,25 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent"  style="width:100%;">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item active" style="color: white; margin:auto;">
+        
+      </li>
         <li class="nav-item active">
         <a class="nav-link" href="#">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          SignOut
+
+          <div class="dropdown" v-if="this.getUserName" >
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{this.getUserName}} 
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <router-link :to="{ name: 'logout'}" style="text-decoration: none; color:white;">
+                 <a class="dropdown-item" href="#">Logout &nbsp;<i class="fa-solid fa-right-from-bracket"></i></a>
+              </router-link>
+              <!-- <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a> -->
+            </div>
+          </div>
+          
           <span class="sr-only">(current)</span>
           </a>
       </li>
@@ -22,7 +38,8 @@
           <i class="fa fa-envelope-o">
             <span class="badge badge-danger">11</span>
           </i>
-          Link
+          <p ></p>
+          
         </a>
       </li>
       <router-link :to="{ name: 'home'}" style="text-decoration: none; color:white;">
@@ -92,25 +109,52 @@
   
   <div class="container-fluid" style=" margin-top:80px;">
     <router-view :key="this.$route.query.text"/>
+    <!-- <h1>{{ $store.state.title }}</h1> -->
   </div>
 </template>
 <script>
 
-
+import { useStore } from "vuex";
+import cookie from 'vue-cookies'
 
 export default{
+  
+  
   data(){
     return {
+      user: cookie.get('user'),
+      store: useStore(),
       text: '',
+      
+    }
+  },
+  computed: {
+    getUserName(){
+      if(cookie.get("user")){
+        return cookie.get("user").name
+      }else{
+        return ''
+      }
+
     }
   },
   methods: {},
+
   beforeCreate() {
-    
       this.$route.query.text = ""
+  },
+  created(){
     
+    console.log(this.store.state.title)
+  },
+   watch: {
+
   }
+  
 }
+
+
+
 </script>
 
 <style>
