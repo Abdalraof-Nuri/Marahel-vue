@@ -1,5 +1,11 @@
 <template>
-  <div class="py-5">
+
+
+<navBar />
+
+
+<div class="container" style=" margin-top:80px;">
+  <div class="py-5 ">
     <div class="container">
       <label for="cars">Show:</label>
 
@@ -421,13 +427,15 @@
 
       <br />
     </div>
+    </div>
 
 </template>
 
 <script>
-import axios from "axios";
-import main from "../main.js";
+
 import { useStore } from "vuex";
+import navBar from "./navBar-view.vue"
+
 
 export default {
   data() {
@@ -460,34 +468,23 @@ export default {
     };
   },
   methods: {
-    async createNewProject(e) {
+    createNewProject(e) {
       e.preventDefault();
+      this.store.dispatch('addProject', this.newProject)
+
 
       this.newProject.user_id = 1;
 
-      try {
-        let res = await axios.post(
-          main.base_URL + "projects/",
-          this.newProject
-        );
-
-        console.log(res.data);
-        this.newProject.name = "";
-        this.newProject.description = "";
-        this.newProject.due_date = "";
-        this.newProject.removed = "";
-        this.newProject.status = "";
-
-        this.$router.go(0);
-      } catch (error) {
-        console.log(error);
-      }
     },
   },
 
   created() {
     this.store.dispatch("newProjects");
   },
+  components: {
+    navBar
+  }
+
 };
 </script>
 

@@ -5,6 +5,34 @@
   margin-bottom: 10px;
 
 }
+.container{
+  margin-left: 50px;
+}
+.add-project-card{
+  width: 340px;
+}
+.login{
+  margin-left:500px;
+  margin-top:50px;
+  border:solid 1px rgba(1, 16, 1, 0.21);
+  border-radius: 10px;
+  box-shadow: 10px 10px 31px 2px rgba(15,0,0,0.75);
+  padding:50px;
+}
+.login-errors{
+  background: rgba(255, 0, 0, 0.55);
+
+  border-radius: 5px;
+}
+.register{
+  margin-left:500px;
+  margin-top:50px;
+  border:solid 1px rgba(1, 16, 1, 0.21);
+  border-radius: 10px;
+  box-shadow: 10px 10px 31px 2px rgba(15,0,0,0.75);
+  padding:50px;
+  height: 580px;
+}
 
 .card {
   

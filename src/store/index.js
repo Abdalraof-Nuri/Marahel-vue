@@ -1,38 +1,28 @@
 
-import {createStore} from 'vuex';
-import  axios from 'axios'
+import { createStore } from 'vuex';
+import axios from 'axios'
 import cookie from 'vue-cookies'
 import router from '../router/index.js'
-import { setTimeout } from 'core-js';
+
 
 // axios.defaults.withCredentials = true; 
 
 const store = createStore({
-   
+
     state: {
         base_URL: 'http://127.0.0.1:8000/api/',
-
-        logedInUser: {
-            
-        },
-        logInErrors: {
-            'message': ''
-        },
+        logedInUser: {},
+        logInErrors: {},
         projects: {
             userProjects: [],
             assignedProjects: [],
         },
         allProjects: [],
         phases: {},
-        isLogedin: 0
     },
     getters: {
-        
-        getLogedInUser: state => {
-            return state.logedInUser
-        },
-        getLogedInUserName: state => {
-            return state.logedInUser
+        getLogedInUser() {
+            return cookie.get('user')
         },
         getLogInErrors: state => {
             return state.logInErrors.message
@@ -47,53 +37,63 @@ const store = createStore({
             return state.projects.assignedProjects
         },
         getAllProjects: state => {
-            return  state.allProjects= state.projects.userProjects.concat(state.projects.assignedProjects); 
+            return state.allProjects = state.projects.userProjects.concat(state.projects.assignedProjects);
         },
-
-        
-
-
-
     },
     mutations: {
-        async logIn(state, user){
-            if(user.email === '' || user.password === ''){
-                state.logInErrors = 'All Fields are required'
-                
-            }else{
-                user = {
-                    "email": user.email,
-                    "password": user.password
-                }
-              try {
-              let res = await axios.post(
-                state.base_URL + "logIn/", user
-              );
-              
-        // getting loged in user and setting cookies
+        async register(state, user){
+            if (user.email === '' || user.password === '' || user.name === '' || user.password_confirmation === '') {
+                state.logInErrors.message = 'All Fields are required'
 
-            cookie.set('user', JSON.stringify(res.data.user));
-            state.logedInUser = res.data.user.name
-                console.log(res.data.user)
-            cookie.set("token", res.data.token, "7d");
-            
-            console.log(state.logedInUser)
-            console.log(cookie.get("token"))
-            
-            
-            } catch (error) {
-                
-                if (error.response) {
-                    state.logInErrors = error.response.data
-                    // console.log(state.logInErrors)
-                }
+           } else {
+               await axios.post(state.base_URL + "register/", user)
+                   .then((response) => {
+                       cookie.set('user', JSON.stringify(response.data.user));
+                       state.logedInUser = response.data.user
+                       console.log(response.data.user)
+                       cookie.set("token", response.data.token, "7d");
 
-                }
-            }
-         
-            
+                       console.log(state.logedInUser)
+                       console.log(cookie.get("token"))
+                       router.push({ name: 'home' })
+
+                   }).catch((error) => {
+                       state.logInErrors = error.response.data
+                       console.log(error);
+                   });
+           }
+
+
         },
-        async logOut(state){
+        resetLogInErors(state){
+            state.logInErrors = {}
+        },
+        async logIn(state, user) {
+            if (user.email === '' || user.password === '') {
+                 state.logInErrors.message = 'All Fields are required'
+
+            } else {
+                await axios.post(state.base_URL + "logIn/", user)
+                    .then((response) => {
+
+                        cookie.set('user', JSON.stringify(response.data.user));
+                        state.logedInUser = response.data.user
+                        console.log(response.data.user)
+                        cookie.set("token", response.data.token, "7d");
+
+                        console.log(state.logedInUser)
+                        console.log(cookie.get("token"))
+                        router.push({ name: 'home' })
+
+                    }).catch((error) => {
+                        state.logInErrors = error.response.data
+                        console.log(error);
+                    });
+            }
+
+
+        },
+        async logOut(state) {
 
             // const config = {
             //     headers: { Authorization: `Bearer ${state.logedInUser.token}` }
@@ -101,58 +101,67 @@ const store = createStore({
 
 
             console.log(cookie.get("token"))
-            try {
-                let res = await axios.get(
-                  state.base_URL + "logOut/" , {headers: {'Authorization': 'Bearer ' + cookie.get("token")}}
-                );
 
-            state.logoutMessage = res.data.message
-            // state.logedInUser = {}
-            cookie.remove("token")
-            cookie.remove("user")
+            await axios.get(state.base_URL + "logOut/", { headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
+                .then((response) => {
+                    state.logoutMessage = response.data.message
+                    // state.logedInUser = {}
+                    cookie.remove("token")
+                    cookie.remove("user")
 
-            }catch(error){
-                console.log(error)
-            }
-            
+                    router.push({ name: 'home' })
+
+                }).catch((error) => {
+
+                    console.log(error);
+                });
 
         },
-        async newProjects(state){
-            
-            try {
-                let res = await axios.get(state.base_URL + "recentProjects", {headers: {'Authorization': 'Bearer ' + cookie.get("token")}});
-                state.projects = res.data;
-              } catch (error) {
+        async newProjects(state) {
+            await axios.get(state.base_URL + "recentProjects", { headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
+                .then((response) => {
+                    state.projects = response.data;
+                }).catch((error) => {
+
+                    console.log(error);
+                });
+
+
+            // console.log(this.progress[1])
+        },
+        async addProject(state, project){
+            console.log(project)
+            await axios.post(state.base_URL + "projects/store", project, { headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
+            .then((response) => {
+                
+                console.log(response.data);
+                router.go(0);
+            }).catch((error) => {
+
                 console.log(error);
-              }
-          
-              // console.log(this.progress[1])
+            });
+
+
         }
     },
     actions: {
-        logIn (context, user) {
+        register(context, user){
+            context.commit('resetLogInErors')
+            context.commit('register', user)
+        },
+        addProject(context, project){
+            context.commit('addProject', project)
+        },
+        logIn(context, user) {
+            context.commit('resetLogInErors')
             context.commit('logIn', user)
-            
-        setTimeout(() => {
-            if(cookie.get('token')){
-                
-                router.push({ name: 'home'})
-            }
-            
-         }, 5000)
-
-          },
-        logOut (context) {
+        },
+        logOut(context) {
             context.commit('logOut')
-            setTimeout(() => {
-                if(!cookie.get('token')){
-                    router.push({ name: 'login-rigister'})
-                }
-             }, 5000)
-          },
-        newProjects (context) {
+        },
+        newProjects(context) {
             context.commit('newProjects')
-          },
+        },
 
     }
 })
