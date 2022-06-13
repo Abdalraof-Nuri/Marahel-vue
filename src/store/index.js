@@ -6,7 +6,7 @@ import router from '../router/index.js'
 
 
 // axios.defaults.withCredentials = true; 
-
+axios.defaults.headers.common['Authorization'] = cookie.get("token");
 const store = createStore({
 
     state: {
@@ -142,6 +142,21 @@ const store = createStore({
             });
 
 
+        },
+        async bringProject(state, project){
+            console.log(project)
+
+            await axios.post(state.base_URL + "projects/show", project, { headers: { 'Authorization': 'Bearer ' + cookie.get("token") } } )
+            .then((response) => {
+                
+                console.log(response.data);
+                // router.go(0);
+            }).catch((error) => {
+
+                console.log(error);
+            });
+
+
         }
     },
     actions: {
@@ -162,6 +177,9 @@ const store = createStore({
         newProjects(context) {
             context.commit('newProjects')
         },
+        bringProject(context, project) {
+            context.commit('bringProject', project)
+        }
 
     }
 })

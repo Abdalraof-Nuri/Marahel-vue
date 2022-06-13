@@ -2,10 +2,7 @@
   <div>
     <h1>{{ this.project.name }}</h1>
     <p>{{ this.project.description }}</p>
-    <ul v-for="phase in this.phases" :key="phase.id">
-      <router-link :to="{name: 'phaseView' , query: {id: phase.id}}" ><li>{{ phase.name }}</li></router-link>
-      
-    </ul>
+
     <!-- 
 
       Better be onclick to show model first then router link
@@ -25,36 +22,20 @@
 </template>
 
 <script>
-import axios from "axios";
 
+import { useStore } from "vuex";
 export default {
   data() {
     return {
-      project: {},
-      phases: [{}],
+      store: useStore(),
+      project: {
+        project_id: this.$route.query.id
+      },
     };
   },
 
-  async mounted() {
-
-    try {
-
-      let res = await axios.get(
-        "http://127.0.0.1:8000/api/projects/" + this.$route.query.id
-      );
-
-    this.project = res.data;
-       res = await axios.get(
-        "http://127.0.0.1:8000/api/phases/findByProjectId/" + this.$route.query.id
-      );
-    console.log("fuck")
-    this.phases = res.data;
-
-    } catch (error) {
-      console.log(error);
-    }
-
-
+  mounted() {
+    this.store.dispatch("bringProject", this.project)
   },
 };
 </script>
