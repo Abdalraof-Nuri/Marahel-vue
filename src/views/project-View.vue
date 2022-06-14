@@ -29,7 +29,7 @@ export default {
     return {
       store: useStore(),
       project: {
-        project_id: this.$route.query.id
+        "project_id": parseInt(this.$route.query.id)
       },
     };
   },

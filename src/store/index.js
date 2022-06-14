@@ -146,7 +146,7 @@ const store = createStore({
         async bringProject(state, project){
             console.log(project)
 
-            await axios.post(state.base_URL + "projects/show", project, { headers: { 'Authorization': 'Bearer ' + cookie.get("token") } } )
+            await axios.get(state.base_URL + "projects/show", {params: project, headers: { 'Authorization': 'Bearer ' + cookie.get("token") } } )
             .then((response) => {
                 
                 console.log(response.data);
