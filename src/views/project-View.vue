@@ -1,4 +1,5 @@
 <template>
+<navBar/>
   <div>
     <h1>{{ this.project.name }}</h1>
     <p>{{ this.project.description }}</p>
@@ -22,9 +23,10 @@
 </template>
 
 <script>
-
+import navBar from "./navBar-view.vue"
 import { useStore } from "vuex";
 export default {
+  components:{navBar},
   data() {
     return {
       store: useStore(),
