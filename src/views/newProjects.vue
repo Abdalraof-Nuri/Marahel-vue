@@ -63,9 +63,7 @@
               </div>
               <div class="mt-5">
                 <p class="heading">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
-                  doloremque ducimus adipisci id earum, laudantium deleniti non
-                  delectus architecto excepturi ipsam magnam eveniet
+                  {{project.description}}
                 </p>
                 <div class="mt-5">
                   <div class="mt-3">
@@ -261,9 +259,7 @@
               </div>
               <div class="mt-5">
                 <p class="heading">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
-                  doloremque ducimus adipisci id earum, laudantium deleniti non
-                  delectus architecto excepturi ipsam magnam eveniet
+                  {{project.description}}
                 </p>
                 <div class="mt-5">
                   <div class="mt-3">
@@ -470,10 +466,12 @@ export default {
   methods: {
     createNewProject(e) {
       e.preventDefault();
+      this.newProject.user_id = this.store.getters.getLogedInUser.id
+
       this.store.dispatch('addProject', this.newProject)
 
 
-      this.newProject.user_id = 1;
+      // this.newProject.user_id = 1;
 
     },
   },

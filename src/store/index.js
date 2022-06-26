@@ -19,7 +19,8 @@ const store = createStore({
         },
         allProjects: [],
         phases: [],
-        project: {}
+        project: {},
+        Teams: [],
     },
     getters: {
         getLogedInUser() {
@@ -40,6 +41,15 @@ const store = createStore({
         getAllProjects: state => {
             return state.allProjects = state.projects.userProjects.concat(state.projects.assignedProjects);
         },
+        getProject: state => {
+            return state.project
+        },
+        getPhases: state => {
+            return state.phases
+        },
+        getTeams: state => {
+            return state.Teams
+        }
     },
     mutations: {
         async register(state, user) {
@@ -152,9 +162,12 @@ const store = createStore({
                 .then((response) => {
                     state.project = response.data.project
                     state.phases = response.data.phases
-                    console.log(state.project);
+                    state.Teams = response.data.teams
+                    console.log(response.data.project);
                     console.log("hello biatch");
-                    console.log(state.phases);
+                    console.log(response.data.phases);
+                    console.log("Team up");
+                    console.log(response.data.teams);
                     // router.go(0);
                 }).catch((error) => {
 
