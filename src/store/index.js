@@ -21,6 +21,7 @@ const store = createStore({
         phases: [],
         project: {},
         Teams: [],
+        searchresult: [],
     },
     getters: {
         getLogedInUser() {
@@ -49,6 +50,9 @@ const store = createStore({
         },
         getTeams: state => {
             return state.Teams
+        },
+        getserchresult: state => {
+            return state.searchresult
         }
     },
     mutations: {
@@ -175,6 +179,21 @@ const store = createStore({
                 });
 
 
+        },
+        async search(state, project_name) {
+            console.log(project_name)
+            await axios.get(state.base_URL + "projects/findByName", { params: project_name, headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
+                .then((response) => {
+                    console.log(response.data.project)
+                    state.searchresult = response.data.projects;
+
+                }).catch((error) => {
+                    console.log(error);
+                })
+
+
+
+
         }
     },
     actions: {
@@ -197,6 +216,9 @@ const store = createStore({
         },
         bringProject(context, project) {
             context.commit('bringProject', project)
+        },
+        Search(context, SerachQuery) {
+            context.commit("search", SerachQuery)
         }
 
     }
