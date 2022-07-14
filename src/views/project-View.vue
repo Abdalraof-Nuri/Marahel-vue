@@ -5,31 +5,24 @@
 
 <section style="margin-top:80px" class="board-info-bar">
 
-	<div class="board-controls">
 
-		<button class="board-title btn">
-			<h2>{{this.store.getters.getProject.name}}</h2>
-		</button>
 
-		<button class="star-btn btn" aria-label="Star Board">
-			<i class="far fa-star" aria-hidden="true"></i>
-		</button>
+		
+			<h2 style="color:black">{{this.store.getters.getProject.name}}</h2>
+           
+		
 
-		<button class="personal-btn btn">Personal</button>
+		
 
-		<button class="private-btn btn"><i class="fas fa-briefcase private-btn-icon" aria-hidden="true"></i>Private</button>
-
-	</div>
-
-	<button class="menu-btn btn"><i class="fas fa-ellipsis-h menu-btn-icon" aria-hidden="true"></i>Show Menu</button>
+	
 
 </section>
 <!-- End of board info bar -->
 
 <!-- Lists container -->
-<section class="lists-container">
+<section class="lists-container card-container">
 
-	<div class="list" v-for="Phases in store.getters.getPhases" :key="Phases.id">
+	<div class="card  list" v-for="Phases in store.getters.getPhases" :key="Phases.id">
             
 
 		<h3 class="list-title">{{Phases.name}}</h3>
@@ -45,7 +38,7 @@
 	</div>
 
 	
-	<button class="add-list-btn btn">Add a list</button>
+	
 
 </section>
  
@@ -83,54 +76,6 @@ export default {
 </script>
 
 <style scoped>
-/*
-
-All grid code is placed in a 'supports' rule (feature query) at the bottom of the CSS (Line 320). 
-            
-The 'supports' rule will only run if your browser supports CSS grid.
-
-Flexbox is used as a fallback so that browsers which don't support grid will still recieve an identical layout.
-
-*/
-
-/* Base styles */
-
-:root {
-    font-size: 10px;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    background-color: #0079bf;
-}
-
-.btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font: inherit;
-    background: none;
-    border: none;
-    color: inherit;
-    padding: 0;
-    cursor: pointer;
-}
-
-:focus {
-    outline-color: #fa0;
-}
-
-
-
-/* Board info bar */
 
 .board-info-bar {
     flex-basis: 3rem;
@@ -139,56 +84,34 @@ body {
     justify-content: space-between;
     margin: 0.8rem 0;
     padding: 0 1rem;
+    padding-bottom: 2em;
     color: #f6f6f6;
+    border-bottom:  0.1rem solid #ccc;
+    width: 35%;
 }
 
-.board-controls {
-    display: flex;
-}
 
-.board-controls .btn {
-    margin-right: 1rem;
-}
 
-.board-controls .btn:last-of-type {
-    margin-right: 0;
-}
 
-.board-info-bar .btn {
-    font-size: 1.4rem;
-    font-weight: 400;
-    transition: background-color 150ms;
-    padding: 0 0.6rem;
-    border-radius: 0.3rem;
-    height: 3rem;
-}
 
-.board-info-bar .btn:hover {
-    background-color: #006aa8;
-}
 
-.private-btn-icon,
-.menu-btn-icon {
-    padding-right: 0.6rem;
-    white-space: nowrap;
-}
 
-.board-title h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    white-space: nowrap;
-}
+
+
+
+
 
 /* Lists */
 
 .lists-container::-webkit-scrollbar {
-    height: 2.4rem;
+    height: 1rem;
 }
 
 .lists-container::-webkit-scrollbar-thumb {
-    background-color: #66a3c7;
-    border: 0.8rem solid #0079bf;
-    border-top-width: 0;
+    background-color: #303c43;
+    border: 0.8rem solid #444e54;
+    border-top-width: 0.8;
+    border-radius: 3rem;
 }
 
 .lists-container {
@@ -200,18 +123,19 @@ body {
 }
 
 .list {
+    margin-top: 2em;
     flex: 0 0 27rem;
     display: flex;
     flex-direction: column;
-    background-color: #e2e4e6;
-    max-height: calc(100vh - 11.8rem);
-    border-radius: 0.3rem;
-    margin-right: 1rem;
+    background-color: rgb(255, 255, 255);
+    max-height: calc(80vh - 5rem);
+    border-radius: 0.5rem;
+    margin-right: 2rem;
 }
-
+/* 
 .list:last-of-type {
     margin-right: 0;
-}
+} */
 
 .list-title {
     font-size: 1.4rem;
@@ -227,6 +151,7 @@ body {
     align-content: start;
     padding: 0 0.6rem 0.5rem;
     overflow-y: auto;
+    border: black;
 }
 
 .list-items::-webkit-scrollbar {
@@ -245,7 +170,7 @@ body {
     background-color: #fff;
     padding: 0.65rem 0.6rem;
     color: #4d4d4d;
-    border-bottom: 0.1rem solid #ccc;
+    border: 0.1rem solid #ccc;
     border-radius: 0.3rem;
     margin-bottom: 0.6rem;
     word-wrap: break-word;
@@ -255,10 +180,10 @@ body {
 .list-items li:last-of-type {
     margin-bottom: 0;
 }
-
+/* 
 .list-items li:hover {
     background-color: #eee;
-}
+} */
 
 .add-card-btn {
     display: block;
@@ -271,100 +196,13 @@ body {
 }
 
 .add-card-btn:hover {
-    background-color: #cdd2d4;
-    color: #4d4d4d;
+    background-color: #755dc9;
+    color: white    ;
     text-decoration: underline;
 }
 
-.add-list-btn {
-    flex: 0 0 27rem;
-    display: block;
-    font-size: 1.4rem;
-    font-weight: 400;
-    background-color: #006aa7;
-    color: #a5cae0;
-    padding: 1rem;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    transition: background-color 150ms;
-    text-align: left;
-}
 
-.add-list-btn:hover {
-    background-color: #005485;
-}
 
-.add-card-btn::after,
-.add-list-btn::after {
-    content: '...';
-}
-
-/*
-
-The following rule will only run if your browser supports CSS grid.
-
-Remove or comment-out the code block below to see how the browser will fall-back to flexbox styling. 
-
-*/
-
-/* @supports (display: grid) {
-    body {
-        display: grid;
-        grid-template-rows: 4rem 3rem auto;
-        grid-row-gap: 0.8rem;
-    }
-
-    .masthead {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        grid-column-gap: 2rem;
-    }
-
-    .boards-menu {
-        display: grid;
-        grid-template-columns: 9rem 18rem;
-        grid-column-gap: 0.8rem;
-    }
-
-    .user-settings {
-        display: grid;
-        grid-template-columns: repeat(4, auto);
-        grid-column-gap: 0.8rem;
-    }
-
-    .board-controls {
-        display: grid;
-        grid-auto-flow: column;
-        grid-column-gap: 1rem;
-    }
-
-    .lists-container {
-        display: grid;
-        grid-auto-columns: 27rem;
-        grid-auto-flow: column;
-        grid-column-gap: 1rem;
-    }
-
-    .list {
-        display: grid;
-        grid-template-rows: auto minmax(auto, 1fr) auto;
-    }
-
-    .list-items {
-        display: grid;
-        grid-row-gap: 0.6rem;
-    }
-
-    .logo,
-    .list,
-    .list-items li,
-    .boards-btn,
-    .board-info-bar,
-    .board-controls .btn,
-    .user-settings-btn {
-        margin: 0;
-    }
-} */
 
 </style>
 

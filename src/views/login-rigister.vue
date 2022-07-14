@@ -1,6 +1,6 @@
 <template>
-<h3 style="margin-left:480px;margin-top:30px;">Marahel</h3>
-  <form class="login" v-if="sigInOrUp == 'in'">
+<h3 style="text-align: center;margin-top:30px;"><b><span  style="color: #6c63ff;">M</span>ARAHEL</b></h3>
+  <form  class="login" v-if="sigInOrUp == 'in'">
   <!-- Email input -->
   
   <div v-if=" store.getters.getLogInErrors !== ''" class="login-errors" style="margin-top:20px;">
@@ -136,4 +136,7 @@ export default {
 </script>
 
 <style>
+
+
+
 </style>
