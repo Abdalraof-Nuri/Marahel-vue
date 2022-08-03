@@ -9,7 +9,8 @@
   </div>
   <!-- End of board info bar -->
 
-  <!-- Lists container -->
+  <!-- container -->
+
   <div class="row hidden-md-up container">
     <div class="col-md-4 card-container">
       <div class="card p-3 mb-3">
@@ -18,6 +19,8 @@
           style="border-radius: 0px"
         >
           <div class="d-flex flex-row align-items-center" style="">
+            <!-- phase Title -->
+
             <div class="ms-2 c-details" style="">
               <h4 class="mb-0">Phase Name</h4>
 
@@ -29,6 +32,7 @@
           <div class="badge"></div>
         </div>
         <div class="mt-5">
+          <!-- Tasks list -->
           <div
             style="
               height: 250px;
@@ -37,6 +41,7 @@
               overflow-y: auto;
             "
           >
+            <!-- Tasks go here -->
             <div class="task" style="">
               <ul
                 style="
@@ -141,123 +146,78 @@
                 </li>
               </ul>
             </div>
-            <div class="task" style="">
-              <ul
-                style="
-                  list-style: none;
-                  padding: 10px;
-                  background-color: white;
-                  box-shadow: rgba(0, 0, 0, 0.05) 10px 6px 24px 0px,
-                    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-                  border-radius: 15px;
-                  border: solid 1px silver;
-                "
-              >
-                <li>
-                  <form action="">
-                    <div class="form-check form-group">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        <input
-                          class="form-control"
-                          type="text"
-                          name="taskName"
-                          id=""
-                          placeholder="Task Name..."
-                          style="
-                            border-radius: 5px;
-                            border-style: none;
-                            border: solid 1px;
-                            border-color: #dfe2d7;
-                          "
-                        />
-                        <!-- <h6 style="color: white">Task 3</h6> -->
-                      </label>
-                    </div>
-                    <div
-                      style="border-top: solid 1px black; border-color: #dee1d6"
-                    >
-                      <input
-                        class="form-control"
-                        type="text-area"
-                        style="
-                          margin: auto;
-                          border-radius: 5px;
-                          border: solid 1px;
-                          border-color: #dfe2d7;
-                          background-color: white;
-                          height: 50px;
-                          width: 95%;
-                        "
-                        placeholder="Task Description..."
-                      />
-                      <button
-                        type="button"
-                        class="btn btn-outline-success"
-                        style="
-                          padding: 5px;
-                          margin-left: 170px;
-                          margin-top: 5px;
-                          width: 17%;
-                          height: 47px;
-                          border-radius: 50px;
-                          background-color: white;
-                        "
-                      ><i class="fas fa-plus"></i></button>
-                    </div>
-                  </form>
-                </li>
-              </ul>
+
+            <!-- create new task form... it sucks -->
+
+            <div
+              class="task new-task"
+              style="
+                border: 1px solid #ccc !important;
+                border-radius: 10px;
+                padding: 10px;
+              "
+            >
+              <label for="startDate">Want to create a new task?</label>
+              <div class="form-group" style="width: 80%; margin: auto">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Task name"
+                />
+                <div style="border-top: solid 1px black; border-color: #dee1d6">
+                  <div class="form-outline">
+                    <textarea
+                      class="form-control"
+                      id="textAreaExample1"
+                      rows="4"
+                      placeholder="Discription..."
+                    ></textarea>
+                  </div>
+                </div>
+                <!-- Date picker -->
+                <div class="row">
+                  <div
+                    class="col-4"
+                    style="padding-left: 0px; padding-top: 10px"
+                  >
+                    <p style="font-size: 12px">Due date:</p>
+                  </div>
+                  <div class="col-8" style="padding: 0px">
+                    <input
+                      id="startDate"
+                      class="form-control"
+                      type="date"
+                      style="width: 100%; margin: auto"
+                    />
+                  </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%">+</button>
+              </div>
             </div>
+            
           </div>
 
           <div class="mt-5">
+            <!-- due date -->
             <div class="mt-3">
-              <span class="text2" style="text-style: strong"
-                >Due Date:
-
-                <span class="text2" v-if="project.created_at"
-                  >{{ project.due_date.slice(8, 10) }}
-                  <span v-if="parseInt(project.due_date.slice(8, 9)) == 3"
-                    >rd</span
-                  >
-                  <span
-                    v-else-if="parseInt(project.due_date.slice(8, 10)) == 11"
-                    >th</span
-                  >
-                  <span
-                    v-else-if="parseInt(project.due_date.slice(8, 10)) == 12"
-                    >th</span
-                  >
-                  <span v-else-if="parseInt(project.due_date.slice(8, 9)) == 2"
-                    >nd</span
-                  >
-                  <span v-else-if="parseInt(project.due_date.slice(8, 9)) == 1"
-                    >st</span
-                  >
-                  <span v-else>th</span>
-                  of
-                  {{ this.months[parseInt(project.due_date.slice(5, 7))] }},
-
-                  {{ project.due_date.slice(0, 4) }}
-                </span>
-              </span>
+              <span class="text2" style="text-style: strong">Due Date: </span>
             </div>
-            <p style="font-size: 15px">Progress:</p>
-            <div class="progress" style="height: 5px">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: 25%"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
+            <!-- phase footer -->
+            <div>
+              <p style="font-size: 15px">Progress:</p>
+              <div class="progress" style="height: 5px">
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 25%"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
@@ -295,7 +255,7 @@ export default {
 </script>
 
 <style scoped>
-.fas:hover{
+.fas:hover {
   color: #0cb10c;
 }
 /* width */
