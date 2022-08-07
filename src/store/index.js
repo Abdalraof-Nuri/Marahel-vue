@@ -45,6 +45,9 @@ const store = createStore({
         getProject: state => {
             return state.project
         },
+        getProjectName: state => {
+            return state.project.name
+        },
         getPhases: state => {
             return state.phases
         },
@@ -160,18 +163,16 @@ const store = createStore({
 
         },
         async bringProject(state, project) {
-            console.log(project)
 
-            await axios.get(state.base_URL + "projects/show", { params: project, headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
+            const headers = {
+                'Authorization': 'Bearer ' + cookie.get("token")
+            }
+            await axios.post(state.base_URL + "projects/show", project, {headers})
                 .then((response) => {
                     state.project = response.data.project
                     state.phases = response.data.phases
                     state.Teams = response.data.teams
-                    console.log(response.data.project);
-                    console.log("hello biatch");
-                    console.log(response.data.phases);
-                    console.log("Team up");
-                    console.log(response.data.teams);
+
                     // router.go(0);
                 }).catch((error) => {
 

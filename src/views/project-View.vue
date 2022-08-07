@@ -1,12 +1,149 @@
 <template>
   <navBar />
 
-  <div>
+  <div class="container">
     <h2 style="color: black; margin-top: 150px">
-      {{ this.store.getters.getProject.name }}
+      {{ store.getters.getProjectName }}
     </h2>
-    <p>{{ this.store.getters.getProject.description }}</p>
+    <p>{{ store.getters.getProject.description }}</p>
+    <!-- should show a model of Teams -->
+    <button
+      class="button-4"
+      role="button"
+      style="float: right; margin: 5px"
+      data-toggle="modal"
+      data-target="#TeamsModal"
+    >
+      Teams<i style="margin: 5px" class="fa fa-users" aria-hidden="true"></i>
+    </button>
+    <div
+      class="modal fade"
+      id="TeamsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="TeamsModalLable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="TeamsModalLable">Teams</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card">
+              <div class="card-header" >Hello</div>
+              <div class="card-body">
+                <div class="members" style="border:solid 1px black;position: absolute;">
+                  
+                <div class="member" >memberName</div>
+                <div class="member" >memberName</div>
+                <div class="member" >memberName</div>
+                <div class="member" >memberName</div>
+
+                </div>
+                
+                </div>
+              <div class="cardfooter">feet</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- should show a model of project edit form -->
+
+    <button
+      class="button-4"
+      role="button"
+      style="float: right; margin: 5px"
+      data-toggle="modal"
+      data-target="#editProjectModal"
+    >
+      Edit Project <i style="margin: 5px" class="fas fa-edit"></i>
+    </button>
+    <div
+      class="modal fade"
+      id="editProjectModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editProjectModalLable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProjectModalLable">Edit Project</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="">
+            <form>
+              <div class="form-group"></div>
+              <label>Project Name: </label>
+              <input
+                class="form-control"
+                type="text"
+                name="ProjectName"
+                id=""
+                placeholder="Project Name"
+              />
+              <label>Project description: </label>
+              <input
+                class="form-control"
+                type="text"
+                name="ProjectName"
+                id=""
+                placeholder="Project Name"
+              />
+              <label>Project dueDate: </label>
+              <input
+                class="form-control"
+                type="datetime-local"
+                id="due-date"
+                name="due-date"
+                style="width: 70%; margin: auto"
+              />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <!-- End of board info bar -->
 
   <!-- container -->
@@ -29,9 +166,31 @@
               </span>
             </div>
           </div>
-          <div class="badge"></div>
         </div>
-        <div class="mt-5">
+        <div class="mt-3">
+          <div>
+            <form class="searchForm" v-on:submit.prevent="submitSearch">
+              <input
+                type="text"
+                v-model="searchQuery"
+                placeholder="Search..."
+                @keyup="submitSearch"
+                style="
+                  margin-bottom: 10px;
+                  width: 100%;
+
+                  border: none;
+                  border-bottom: solid 1px black;
+                "
+              />
+              <span
+                v-show="searchQuery"
+                class="removeInput"
+                @click="removeSearchQuery"
+                >+</span
+              >
+            </form>
+          </div>
           <!-- Tasks list -->
           <div
             style="
@@ -197,7 +356,6 @@
                 <button class="btn btn-primary" style="width: 100%">+</button>
               </div>
             </div>
-            
           </div>
 
           <div class="mt-5">
@@ -388,6 +546,39 @@ export default {
   background-color: #755dc9;
   color: white;
   text-decoration: underline;
+}
+.button-4 {
+  appearance: none;
+  background-color: #fafbfc;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0,
+    rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292e;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.button-4:hover {
+  background-color: #f3f4f6;
+  text-decoration: none;
+  transition-duration: 0.1s;
 }
 </style>
 
