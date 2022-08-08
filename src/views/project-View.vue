@@ -1,15 +1,153 @@
 <template>
   <navBar />
 
-  <div>
+  <div class="container">
     <h2 style="color: black; margin-top: 150px">
-      {{ this.store.getters.getProject.name }}
+      {{ store.getters.getProjectName }}
     </h2>
-    <p>{{ this.store.getters.getProject.description }}</p>
+    <p>{{ store.getters.getProject.description }}</p>
+    <!-- should show a model of Teams -->
+    <button
+      class="button-4"
+      role="button"
+      style="float: right; margin: 5px"
+      data-toggle="modal"
+      data-target="#TeamsModal"
+    >
+      Teams<i style="margin: 5px" class="fa fa-users" aria-hidden="true"></i>
+    </button>
+    <div
+      class="modal fade"
+      id="TeamsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="TeamsModalLable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="TeamsModalLable">Teams</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card">
+              <div class="card-header" >Hello</div>
+              <div class="card-body">
+                <div class="members" style="border:solid 1px black;position: absolute;">
+                  
+                <div class="member" >memberName</div>
+                <div class="member" >memberName</div>
+                <div class="member" >memberName</div>
+                <div class="member" >memberName</div>
+
+                </div>
+                
+                </div>
+              <div class="cardfooter">feet</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- should show a model of project edit form -->
+
+    <button
+      class="button-4"
+      role="button"
+      style="float: right; margin: 5px"
+      data-toggle="modal"
+      data-target="#editProjectModal"
+    >
+      Edit Project <i style="margin: 5px" class="fas fa-edit"></i>
+    </button>
+    <div
+      class="modal fade"
+      id="editProjectModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="editProjectModalLable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProjectModalLable">Edit Project</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="">
+            <form>
+              <div class="form-group"></div>
+              <label>Project Name: </label>
+              <input
+                class="form-control"
+                type="text"
+                name="ProjectName"
+                id=""
+                placeholder="Project Name"
+              />
+              <label>Project description: </label>
+              <input
+                class="form-control"
+                type="text"
+                name="ProjectName"
+                id=""
+                placeholder="Project Name"
+              />
+              <label>Project dueDate: </label>
+              <input
+                class="form-control"
+                type="datetime-local"
+                id="due-date"
+                name="due-date"
+                style="width: 70%; margin: auto"
+              />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <!-- End of board info bar -->
 
-  <!-- Lists container -->
+  <!-- container -->
+
   <div class="row hidden-md-up container">
     <div class="col-md-4 card-container">
       <div class="card p-3 mb-3">
@@ -18,6 +156,8 @@
           style="border-radius: 0px"
         >
           <div class="d-flex flex-row align-items-center" style="">
+            <!-- phase Title -->
+
             <div class="ms-2 c-details" style="">
               <h4 class="mb-0">Phase Name</h4>
 
@@ -26,9 +166,32 @@
               </span>
             </div>
           </div>
-          <div class="badge"></div>
         </div>
-        <div class="mt-5">
+        <div class="mt-3">
+          <div>
+            <form class="searchForm" v-on:submit.prevent="submitSearch">
+              <input
+                type="text"
+                v-model="searchQuery"
+                placeholder="Search..."
+                @keyup="submitSearch"
+                style="
+                  margin-bottom: 10px;
+                  width: 100%;
+
+                  border: none;
+                  border-bottom: solid 1px black;
+                "
+              />
+              <span
+                v-show="searchQuery"
+                class="removeInput"
+                @click="removeSearchQuery"
+                >+</span
+              >
+            </form>
+          </div>
+          <!-- Tasks list -->
           <div
             style="
               height: 250px;
@@ -37,6 +200,7 @@
               overflow-y: auto;
             "
           >
+            <!-- Tasks go here -->
             <div class="task" style="">
               <ul
                 style="
@@ -141,123 +305,77 @@
                 </li>
               </ul>
             </div>
-            <div class="task" style="">
-              <ul
-                style="
-                  list-style: none;
-                  padding: 10px;
-                  background-color: white;
-                  box-shadow: rgba(0, 0, 0, 0.05) 10px 6px 24px 0px,
-                    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-                  border-radius: 15px;
-                  border: solid 1px silver;
-                "
-              >
-                <li>
-                  <form action="">
-                    <div class="form-check form-group">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        <input
-                          class="form-control"
-                          type="text"
-                          name="taskName"
-                          id=""
-                          placeholder="Task Name..."
-                          style="
-                            border-radius: 5px;
-                            border-style: none;
-                            border: solid 1px;
-                            border-color: #dfe2d7;
-                          "
-                        />
-                        <!-- <h6 style="color: white">Task 3</h6> -->
-                      </label>
-                    </div>
-                    <div
-                      style="border-top: solid 1px black; border-color: #dee1d6"
-                    >
-                      <input
-                        class="form-control"
-                        type="text-area"
-                        style="
-                          margin: auto;
-                          border-radius: 5px;
-                          border: solid 1px;
-                          border-color: #dfe2d7;
-                          background-color: white;
-                          height: 50px;
-                          width: 95%;
-                        "
-                        placeholder="Task Description..."
-                      />
-                      <button
-                        type="button"
-                        class="btn btn-outline-success"
-                        style="
-                          padding: 5px;
-                          margin-left: 170px;
-                          margin-top: 5px;
-                          width: 17%;
-                          height: 47px;
-                          border-radius: 50px;
-                          background-color: white;
-                        "
-                      ><i class="fas fa-plus"></i></button>
-                    </div>
-                  </form>
-                </li>
-              </ul>
+
+            <!-- create new task form... it sucks -->
+
+            <div
+              class="task new-task"
+              style="
+                border: 1px solid #ccc !important;
+                border-radius: 10px;
+                padding: 10px;
+              "
+            >
+              <label for="startDate">Want to create a new task?</label>
+              <div class="form-group" style="width: 80%; margin: auto">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Task name"
+                />
+                <div style="border-top: solid 1px black; border-color: #dee1d6">
+                  <div class="form-outline">
+                    <textarea
+                      class="form-control"
+                      id="textAreaExample1"
+                      rows="4"
+                      placeholder="Discription..."
+                    ></textarea>
+                  </div>
+                </div>
+                <!-- Date picker -->
+                <div class="row">
+                  <div
+                    class="col-4"
+                    style="padding-left: 0px; padding-top: 10px"
+                  >
+                    <p style="font-size: 12px">Due date:</p>
+                  </div>
+                  <div class="col-8" style="padding: 0px">
+                    <input
+                      id="startDate"
+                      class="form-control"
+                      type="date"
+                      style="width: 100%; margin: auto"
+                    />
+                  </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%">+</button>
+              </div>
             </div>
           </div>
 
           <div class="mt-5">
+            <!-- due date -->
             <div class="mt-3">
-              <span class="text2" style="text-style: strong"
-                >Due Date:
-
-                <span class="text2" v-if="project.created_at"
-                  >{{ project.due_date.slice(8, 10) }}
-                  <span v-if="parseInt(project.due_date.slice(8, 9)) == 3"
-                    >rd</span
-                  >
-                  <span
-                    v-else-if="parseInt(project.due_date.slice(8, 10)) == 11"
-                    >th</span
-                  >
-                  <span
-                    v-else-if="parseInt(project.due_date.slice(8, 10)) == 12"
-                    >th</span
-                  >
-                  <span v-else-if="parseInt(project.due_date.slice(8, 9)) == 2"
-                    >nd</span
-                  >
-                  <span v-else-if="parseInt(project.due_date.slice(8, 9)) == 1"
-                    >st</span
-                  >
-                  <span v-else>th</span>
-                  of
-                  {{ this.months[parseInt(project.due_date.slice(5, 7))] }},
-
-                  {{ project.due_date.slice(0, 4) }}
-                </span>
-              </span>
+              <span class="text2" style="text-style: strong">Due Date: </span>
             </div>
-            <p style="font-size: 15px">Progress:</p>
-            <div class="progress" style="height: 5px">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: 25%"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
+            <!-- phase footer -->
+            <div>
+              <p style="font-size: 15px">Progress:</p>
+              <div class="progress" style="height: 5px">
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 25%"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
@@ -295,7 +413,7 @@ export default {
 </script>
 
 <style scoped>
-.fas:hover{
+.fas:hover {
   color: #0cb10c;
 }
 /* width */
@@ -428,6 +546,39 @@ export default {
   background-color: #755dc9;
   color: white;
   text-decoration: underline;
+}
+.button-4 {
+  appearance: none;
+  background-color: #fafbfc;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0,
+    rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292e;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.button-4:hover {
+  background-color: #f3f4f6;
+  text-decoration: none;
+  transition-duration: 0.1s;
 }
 </style>
 
