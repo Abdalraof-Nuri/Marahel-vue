@@ -6,6 +6,7 @@
       {{ store.getters.getProjectName }}
     </h2>
     <p>{{ store.getters.getProject.description }}</p>
+
     <!-- should show a model of Teams -->
     <button
       class="button-4"
@@ -38,19 +39,29 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="card">
-              <div class="card-header" >Hello</div>
+            <div class="">
+              <div class="card-header">This Project Teams</div>
               <div class="card-body">
-                <div class="members" style="border:solid 1px black;position: absolute;">
-                  
-                <div class="member" >memberName</div>
-                <div class="member" >memberName</div>
-                <div class="member" >memberName</div>
-                <div class="member" >memberName</div>
-
+                <div
+                  v-for="team in store.getters.getTeams"
+                  :key="team.id"
+                  class="row hidden-md-up container"
+                >
+                  <div class="col-md-5 card-container">
+                    <div class="card" style="width: 100%">
+                      <div class="card-header">{{ team.name }}</div>
+                      <div class="card-body">
+                        <ul style="list-style-type: none">
+                          <li>member 1</li>
+                          <li>member 2</li>
+                          <li>member 3</li>
+                          <li>member 4</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                
-                </div>
+              </div>
               <div class="cardfooter">feet</div>
             </div>
           </div>
@@ -62,7 +73,7 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary">Add Team</button>
           </div>
         </div>
       </div>
@@ -76,6 +87,7 @@
       style="float: right; margin: 5px"
       data-toggle="modal"
       data-target="#editProjectModal"
+      @click="loadEditProjectModal"
     >
       Edit Project <i style="margin: 5px" class="fas fa-edit"></i>
     </button>
@@ -105,14 +117,17 @@
               <div class="form-group"></div>
               <label>Project Name: </label>
               <input
+                style="font-weight: bold"
+                v-model="project.name"
                 class="form-control"
                 type="text"
                 name="ProjectName"
                 id=""
-                placeholder="Project Name"
               />
               <label>Project description: </label>
               <input
+                style="font-weight: bold"
+                v-model="project.description"
                 class="form-control"
                 type="text"
                 name="ProjectName"
@@ -121,6 +136,7 @@
               />
               <label>Project dueDate: </label>
               <input
+                v-model="project.due_date"
                 class="form-control"
                 type="datetime-local"
                 id="due-date"
@@ -137,7 +153,157 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              @click="editProject"
+              data-dismiss="modal"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- button to delete the projects -->
+    <button
+      class="button-4"
+      role="button"
+      style="float: right; margin: 5px"
+      data-toggle="modal"
+      data-target="#deleteProjectModal"
+    >
+      Delete Project <i style="margin: 5px" class="fas fa-trash-alt"></i>
+    </button>
+    <div
+      class="modal fade"
+      id="deleteProjectModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="deleteProjectModalLable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteProjectModalLable">Alert</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5>Are You Sure You Want To Delete This Project?</h5>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              NO
+            </button>
+            <button
+              data-dismiss="modal"
+              type="button"
+              class="btn btn-primary"
+              @click="bringDate()"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- add new Phase -->
+    <button
+      class="button-4"
+      role="button"
+      style="float: right; margin: 5px"
+      data-toggle="modal"
+      data-target="#addPhaseModal"
+    >
+      Add Phase <i style="margin: 5px" class="fas fa-plus-square"></i>
+    </button>
+    <div
+      class="modal fade"
+      id="addPhaseModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addPhaseModalLable"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPhaseModalLable">Add New Phase</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="">
+            <h6
+              v-if="errors.message != ''"
+              style="background: red; border-radius: 15px; height: 20px"
+            >
+              {{ errors.message }}
+            </h6>
+
+            <form>
+              <div class="form-group"></div>
+              <label>Phase Name: </label>
+              <input
+                v-model="newPhase.name"
+                class="form-control"
+                type="text"
+                name="PhaseName"
+                id=""
+                placeholder="Phase Name"
+              />
+              <label>Phase description: </label>
+              <input
+                v-model="newPhase.description"
+                class="form-control"
+                type="text"
+                name="PhaseName"
+                id=""
+                placeholder="Phase Name"
+              />
+              <label>Phase dueDate: </label>
+              <input
+                v-model="newPhase.due_date"
+                class="form-control"
+                type="datetime-local"
+                id="due-date"
+                name="due-date"
+                style="width: 70%; margin: auto"
+              />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              @click="addNewPhase()"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
@@ -149,7 +315,11 @@
   <!-- container -->
 
   <div class="row hidden-md-up container">
-    <div class="col-md-4 card-container">
+    <div
+      class="col-md-4 card-container"
+      v-for="Phases in store.getters.getPhases"
+      :key="Phases.id"
+    >
       <div class="card p-3 mb-3">
         <div
           class="d-flex justify-content-between card-header"
@@ -159,7 +329,8 @@
             <!-- phase Title -->
 
             <div class="ms-2 c-details" style="">
-              <h4 class="mb-0">Phase Name</h4>
+              <h4 style="font-weight: bold" class="mb-0">{{ Phases.name }}</h4>
+              <h4 class="mb-0">{{ Phases.description }}</h4>
 
               <span class="text2">
                 <span style="color: black"> Started at:</span>
@@ -168,7 +339,7 @@
           </div>
         </div>
         <div class="mt-3">
-          <div>
+          <!-- <div>
             <form class="searchForm" v-on:submit.prevent="submitSearch">
               <input
                 type="text"
@@ -190,8 +361,9 @@
                 >+</span
               >
             </form>
-          </div>
+          </div> -->
           <!-- Tasks list -->
+
           <div
             style="
               height: 250px;
@@ -201,19 +373,37 @@
             "
           >
             <!-- Tasks go here -->
-            <div class="task" style="">
-              <ul
-                style="
-                  list-style: none;
-                  padding: 10px;
-                  background-color: #3f3d48;
-                  box-shadow: rgba(0, 0, 0, 0.05) 10px 6px 24px 0px,
-                    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-                  border-radius: 15px;
-                "
-              >
-                <li>
+
+            <div
+              v-for="Tasks in store.getters.getTasks"
+              :key="Tasks.id"
+              class="task"
+              style=""
+            >
+              <ul>
+                <li
+                  v-if="Phases.id === Tasks.phase_id"
+                  style="
+                    list-style: none;
+                    padding: 10px;
+                    background-color: #3f3d48;
+                    box-shadow: rgba(0, 0, 0, 0.05) 10px 6px 24px 0px,
+                      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+                    border-radius: 15px;
+                  "
+                >
                   <div class="form-check">
+                    <button
+                      class="button-4"
+                      role="button"
+                      style="float: right; margin: 0px"
+                      data-toggle="modal"
+                      data-target="#deleteTaskModal"
+                      @click="this.TID = Tasks.id"
+                    >
+                      <i style="margin: 0px" class="fas fa-times"></i>
+                    </button>
+
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -221,19 +411,22 @@
                       id="flexCheckDefault"
                     />
                     <label class="form-check-label" for="flexCheckDefault">
-                      <h6 style="color: white">Task 1</h6>
+                      <h6 style="color: white">{{ Tasks.name }}</h6>
                     </label>
-                  </div>
-                  <div style="border-top: solid 1px; border-color: #dee1d6">
-                    <p style="font-size: 13px; color: white">
-                      Task discription Task discription Task discription Task
-                      discription
-                    </p>
+
+                    <div style="border-top: solid 1px; border-color: #dee1d6">
+                      <p style="font-size: 13px; color: white">
+                        {{ Tasks.description }}
+                      </p>
+                      <p style="font-size: 13px; color: white">
+                        {{ Tasks.due_date }}
+                      </p>
+                    </div>
                   </div>
                 </li>
               </ul>
             </div>
-            <div class="task" style="">
+            <!-- <div class="task" style="">
               <ul
                 style="
                   list-style: none;
@@ -270,8 +463,8 @@
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="task" style="">
+            </div> -->
+            <!-- <div class="task" style="">
               <ul
                 style="
                   list-style: none;
@@ -304,9 +497,9 @@
                   </div>
                 </li>
               </ul>
-            </div>
+            </div> -->
 
-            <!-- create new task form... it sucks -->
+            <!-- create new task form...-->
 
             <div
               class="task new-task"
@@ -317,51 +510,38 @@
               "
             >
               <label for="startDate">Want to create a new task?</label>
-              <div class="form-group" style="width: 80%; margin: auto">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Task name"
-                />
-                <div style="border-top: solid 1px black; border-color: #dee1d6">
-                  <div class="form-outline">
-                    <textarea
-                      class="form-control"
-                      id="textAreaExample1"
-                      rows="4"
-                      placeholder="Discription..."
-                    ></textarea>
-                  </div>
-                </div>
-                <!-- Date picker -->
-                <div class="row">
-                  <div
-                    class="col-4"
-                    style="padding-left: 0px; padding-top: 10px"
-                  >
-                    <p style="font-size: 12px">Due date:</p>
-                  </div>
-                  <div class="col-8" style="padding: 0px">
-                    <input
-                      id="startDate"
-                      class="form-control"
-                      type="date"
-                      style="width: 100%; margin: auto"
-                    />
-                  </div>
-                </div>
-
-                <button class="btn btn-primary" style="width: 100%">+</button>
-              </div>
+              <button
+                type="button"
+                role="button"
+                class="btn btn-primary"
+                style="width: 75%"
+                data-toggle="modal"
+                data-target="#addTask"
+                @click="this.PID = Phases.id"
+              >
+                +
+              </button>
             </div>
           </div>
 
           <div class="mt-5">
+            <!-- button to delete the phase -->
+            <button
+              type="button"
+              role="button"
+              class="btn btn-primary"
+              style="width: 75%"
+              data-toggle="modal"
+              data-target="#deletePhaseModal"
+              @click="this.PID = Phases.id"
+            >
+              Delete Phase
+            </button>
+
             <!-- due date -->
             <div class="mt-3">
               <span class="text2" style="text-style: strong">Due Date: </span>
+              <p>{{ Phases.due_date }}</p>
             </div>
             <!-- phase footer -->
             <div>
@@ -382,6 +562,159 @@
       </div>
     </div>
   </div>
+  <!-- the delete Task modal -->
+  <div
+    class="modal fade"
+    id="deleteTaskModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deleteTaskModalLable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteTaskModalLable">Alert</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>Are You Sure You Want To Delete This Task?</h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            NO
+          </button>
+          <button
+            data-dismiss="modal"
+            type="button"
+            class="btn btn-primary"
+            @click="DeleteTa(this.TID)"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- the delete phase modal -->
+  <div
+    class="modal fade"
+    id="deletePhaseModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deletePhaseModalLable"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deletePhaseModalLable">Alert</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>Are You Sure You Want To Delete This Phase?</h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            NO
+          </button>
+          <button
+            data-dismiss="modal"
+            type="button"
+            class="btn btn-primary"
+            @click="Deleteph(this.PID)"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- new task modal -->
+
+  <div
+    class="modal fade"
+    id="addTask"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addTaskLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTaskLabel">Add a new Task</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="input-project-name">Task name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="input-project-name"
+              placeholder="Enter Task name..."
+              v-model="this.newTask.name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="input-project-discriptin">Discription</label>
+            <textarea
+              class="form-control"
+              id="input-project-discriptin"
+              placeholder="Discription..."
+              cols="30"
+              rows="3"
+              v-model="this.newTask.description"
+            >
+            </textarea>
+          </div>
+
+          <div class="form-group form-check">
+            <label for="due-date">Pick a due date: &ensp;</label>
+            <input
+              class="form-control"
+              type="datetime-local"
+              id="due-date"
+              name="due-date"
+              style="width: 70%; margin: auto"
+              v-model="this.newTask.due_date"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button class="btn btn-primary" @click="addNewTask(this.PID)">
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -392,21 +725,149 @@ export default {
   data() {
     return {
       store: useStore(),
-      project: {},
+      errors: {
+        message: "",
+      },
+      project: {
+        name: "",
+      },
+      DeleteProject: {
+        project_id: "",
+        deleteDate: "",
+      },
+      DeletePhase: {
+        phase_id: "",
+        deleteDate: "",
+      },
+      DelTask: 0,
+
+      newPhase: {
+        name: "",
+        description: "",
+        due_date: "",
+        projectId: 0,
+      },
+      newTask: {
+        project_id: 0,
+        name: "",
+        description: "",
+        due_date: "",
+        phaseId: 0,
+      },
+      PID: 0,
+      TID: 0,
       //  proj:this.store.getters.getProject,
     };
+  },
+  methods: {
+    bringDate() {
+      console.log(new Date().toLocaleString());
+      this.DeleteProject.project_id = parseInt(this.$route.query.id);
+      this.DeleteProject.deleteDate = new Date().toLocaleString();
+      this.store.dispatch("deleteproject", this.DeleteProject);
+    },
+    Deleteph(PID) {
+      console.log(new Date().toLocaleString());
+      this.DeletePhase.phase_id = PID;
+      this.DeletePhase.deleteDate = new Date().toLocaleString();
+      this.store.dispatch("deletephase", this.DeletePhase);
+    },
+    DeleteTa(TID) {
+      this.DelTask = TID;
+      this.store.dispatch("deletetask", this.DelTask);
+    },
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
+    addNewPhase() {
+      this.errors.message = "";
+      if (
+        this.newPhase.name == "" ||
+        this.newPhase.description == "" ||
+        this.newPhase.due_date == ""
+      ) {
+        this.errors.message = "All Fields are required";
+        // alert("all fields are required");
+      } else {
+        this.newPhase.projectId = parseInt(this.$route.query.id);
+        this.store.dispatch("addPhase", this.newPhase);
+      }
+    },
+
+    addNewTask(ID) {
+      console.log(
+        this.newTask.name,
+        this.newTask.description,
+        this.newTask.due_date
+      );
+      this.errors.message = "";
+      if (
+        this.newTask.name == "" ||
+        this.newTask.description == "" ||
+        this.newTask.due_date == ""
+      ) {
+        // this.errors.message = "All Fields are required";
+        alert("all fields are required");
+      } else {
+        this.newTask.project_id = parseInt(this.$route.query.id);
+        this.newTask.phaseId = ID;
+        this.store.dispatch("addTask", this.newTask);
+      }
+    },
+    loadEditProjectModal() {
+      this.project = this.store.getters.getProject;
+      console.log(this.project);
+    },
+    editProject() {
+      this.errors.message = "";
+      if (
+        this.project.name == "" ||
+        this.project.description == "" ||
+        this.project.due_date == ""
+      ) {
+        this.errors.message = "all Fields are required";
+      } else {
+        this.project.projectId = parseInt(this.$route.query.id);
+        this.store.dispatch("editProject", this.project);
+      }
+    },
   },
 
   mounted() {
     this.store.dispatch("bringProject", {
       project_id: parseInt(this.$route.query.id),
     });
-    this.project = this.store.getters.getproject;
-    console.log(this.project);
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //   // INSERT CODE HERE
+    //   // get box count
+    //   var count = 0;
+    //   var checked = 0;
+    //   function countBoxes() {
+    //     count = $("input[type='checkbox']").length;
+    //     console.log(count);
+    //   }
+    //   countBoxes();
+    //   $(":checkbox").click(countBoxes);
+    //   function countChecked() {
+    //     checked = $("input:checked").length;
+
+    //     var percentage = parseInt((checked / count) * 100, 10);
+    //     $(".progressbar-bar").progressbar({
+    //       value: percentage,
+    //     });
+    //     $(".progressbar-label").text(percentage + "%");
+    //   }
+    //   countChecked();
+    //   $(":checkbox").click(countChecked);
+    // });
+
+    // this.project = this.store.getters.getproject;
+    // console.log(this.project);
   },
   computed: {
-    getProject() {
-      return this.project;
+    getProjectName() {
+      return this.project.name;
     },
   },
 };
