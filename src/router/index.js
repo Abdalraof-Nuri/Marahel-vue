@@ -11,6 +11,8 @@ import loginRigister from '../views/login-rigister.vue'
 import cookie from 'vue-cookies'
 import logoutView from '../views/logout-view.vue'
 import LandingPage from '../views/LandingPage'
+import chatComponent from '../views/chatComponent'
+
 
 
 const routes = [
@@ -23,6 +25,11 @@ const routes = [
     path: '/login',
     name: 'login-rigister',
     component: loginRigister
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: chatComponent
   },
   {
     path: '/logout',
