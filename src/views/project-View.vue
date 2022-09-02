@@ -123,6 +123,7 @@
                 type="text"
                 name="ProjectName"
                 id=""
+                placeholder="Project Name"
               />
               <label>Project description: </label>
               <input
@@ -132,7 +133,7 @@
                 type="text"
                 name="ProjectName"
                 id=""
-                placeholder="Project Name"
+                placeholder="Project description"
               />
               <label>Project dueDate: </label>
               <input
@@ -276,7 +277,7 @@
                 type="text"
                 name="PhaseName"
                 id=""
-                placeholder="Phase Name"
+                placeholder="Phase description"
               />
               <label>Phase dueDate: </label>
               <input

@@ -179,7 +179,7 @@ const store = createStore({
         },
         async deletetask(state, deletetask) {
             console.log(deletetask)
-            await axios.delete(state.base_URL + "tasks/destroy", { params: { "task_id": deletetask }, headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
+            await axios.delete(state.base_URL + "tasks/delete", { params: { "task_id": deletetask }, headers: { 'Authorization': 'Bearer ' + cookie.get("token") } })
                 .then((response) => {
 
                     console.log(response.data);

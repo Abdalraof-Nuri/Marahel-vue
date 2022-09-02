@@ -10,40 +10,41 @@
       top: 0;
     "
   >
-
     <div
       class="collapse navbar-collapse"
       id="navbarSupportedContent"
       style="width: 100%"
     >
-    <h1 style="
-      color: #266C8E;
-    ">M</h1>
-    <h3 style="
-      margin-right: 20px;
-      color: white;
-    ">arahel</h3>
-  <form class="form-inline" style="
-  margin-right: 600px;">
+      <router-link
+        :to="{ name: 'home' }"
+        style="text-decoration: none; color: white"
+      >
+        <h1 style="color: #266c8e">M</h1>
+      </router-link>
+      <router-link
+        :to="{ name: 'home' }"
+        style="text-decoration: none; color: white"
+      >
+        <h3 style="margin-right: 20px; color: white">arahel</h3>
+      </router-link>
+
+      <form class="form-inline" style="margin-right: 600px">
         <button
           class="btn btn-outline-success my-2 my-sm-0 search-btn"
-          style="margin-right: 10px; 
-          background-color: white; 
-          border: none;
-          border-radius: 50px; 
-          border-style: none;
-          background: #71706C;
+          style="
+            margin-right: 10px;
+            background-color: white;
+            border: none;
+            border-radius: 50px;
+            border-style: none;
+            background: #71706c;
           "
         >
           <router-link
             :to="{ name: 'searchResults', query: { text: this.text } }"
-            style="
-            text-decoration: none;
-            color: black;
-            
-            "
-            ><i class="fa fa-search"></i></router-link
-          >
+            style="text-decoration: none; color: black"
+            ><i class="fa fa-search"></i
+          ></router-link>
         </button>
         <input
           class="form-control mr-sm-2"
@@ -51,17 +52,10 @@
           placeholder="Search"
           aria-label="Search..."
           v-model="this.text"
-          style="
-          border-radius: 50px;
-          border-style: none;
-          background: #71706C;
-          
-          "
+          style="border-radius: 50px; border-style: none; background: #71706c"
         />
       </form>
       <ul class="navbar-nav mr-auto">
-        
-
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fa fa-envelope-o">
@@ -70,8 +64,8 @@
             <p></p>
           </a>
         </li>
-        
-        <router-link
+
+        <!-- <router-link
           :to="{ name: 'home' }"
           style="text-decoration: none; color: white"
         >
@@ -81,7 +75,7 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-        </router-link>
+        </router-link> -->
         <li class="nav-item active">
           <a class="nav-link" href="#">
             <div class="dropdown" v-if="store.getters.getLogedInUser">
@@ -114,10 +108,7 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-
       </ul>
-
-
     </div>
   </nav>
 </template>
@@ -144,5 +135,4 @@ export default {
   color: #424242;
   opacity: 1; /* Firefox */
 }
-
 </style>

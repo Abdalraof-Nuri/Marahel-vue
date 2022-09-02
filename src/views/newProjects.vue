@@ -11,7 +11,7 @@
         <option value="All" >All</option>
         <option value="Mine">My Projects</option>
         <option value="Assigned">Assigned Projects</option>
-      </select> -->
+        </select> -->
 
         <button name="MyProjects" class="mineOrAssigned">My projects</button>
         <button name="Assigned Projects" class="mineOrAssigned">
