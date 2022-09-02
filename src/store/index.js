@@ -22,6 +22,8 @@ const store = createStore({
         project: {},
         Teams: [],
         searchresult: [],
+        chatList: {},
+        chat: {},
     },
     getters: {
         getLogedInUser() {
@@ -56,7 +58,13 @@ const store = createStore({
         },
         getserchresult: state => {
             return state.searchresult
-        }
+        },
+        getChatList: state => {
+            return state.chatList;
+        },
+        getChat: state => {
+            return state.chat;
+        },
     },
     mutations: {
         async register(state, user) {
@@ -195,7 +203,38 @@ const store = createStore({
 
 
 
-        }
+        },
+        async getChatList(state){
+            const headers = {
+                'Authorization': 'Bearer ' + cookie.get("token")
+            }
+            await axios.post(state.base_URL + "chat/getChatList", {}, {headers})
+                .then((response) => {
+                    console.log(response.data);
+                    state.chatList = response.data
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+
+        },
+        async loadChat(state, receiverId){
+            const headers = {
+                Authorization: "Bearer " + cookie.get("token"),
+              };
+                axios
+                .post(
+                  "http://127.0.0.1:8000/api/chat/getChat",
+                  { receiver_id: receiverId },
+                  { headers }
+                )
+                .then((response) => {
+                    state.chat = response.data;
+                  console.log(state.chat);
+
+                });
+        },
+
     },
     actions: {
         register(context, user) {
@@ -220,6 +259,12 @@ const store = createStore({
         },
         Search(context, SerachQuery) {
             context.commit("search", SerachQuery)
+        },
+        getChatList(context){
+            context.commit('getChatList');
+        },
+        loadChat(context, receiverId){
+            context.commit('loadChat', receiverId);
         }
 
     }
